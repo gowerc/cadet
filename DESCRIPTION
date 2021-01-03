@@ -1,0 +1,17 @@
+Package: project
+Title: project support functions
+Version: 0.0.0.9000
+Authors@R: 
+    person(given = "Craig",family = "Gower", role = c("aut", "cre"),email = "first.last@example.com")
+Description: project support functions
+License: MIT + file LICENSE
+Encoding: UTF-8
+LazyData: true
+Imports:
+    dplyr,
+    tibble,
+    jsonlite,
+    mongolite,
+    purrr,
+    assertthat
+RoxygenNote: 6.1.1

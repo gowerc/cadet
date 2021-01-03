@@ -1,0 +1,11 @@
+^LICENSE\.md$
+^app\.Rproj$
+^\.Rproj\.user$
+^analysis
+^outputs
+^data
+^crawler
+^scrapy.cfg$
+^docker
+^docker-compose.yml$
+

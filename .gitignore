@@ -1,0 +1,32 @@
+
+### File tmp files
+*.swp
+
+### Pycharm tmp files
+.idea/
+
+## Data formats 
+*.jl
+*.sql
+
+## Python compiled files
+*.pyc
+
+
+## Python compiled directory
+*/__pycache__/
+
+.vscode
+
+.DS_Store
+
+
+.Rproj.user
+data/*
+.Rhistory
+rpkg/
+
+
+crawler.log
+
+crawler/tests/testpages/
