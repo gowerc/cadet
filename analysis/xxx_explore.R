@@ -1,18 +1,22 @@
-
+devtools::load_all()
 library(tidyverse)
 library(scales)
-library(project)
 library(recipes)
+
 
 ## Get access to mongo database
 mong <- init_mongo()
 
 ## Import data as json dataset
-js <- mongo2list(mong)
+js <- mong$find('{"initial" : { "$ne" : null }, "lazy" : { "$ne" : null }}')
+
+### Clean up data base
+# mong$remove('{"lazy" : { "$eq" : null }}')
+# mong$remove('{"initial" : { "$eq" : null }}')
 
 ## Extract key values into a tabular df
 dat_full <- json2df(js) %>% 
-    select_all(str_to_upper)  %>% 
+    select_all(str_to_upper)  %>%
     filter( MILEAGE <= 200000) %>% 
     filter(PRICE <= 60000) 
 
@@ -63,10 +67,6 @@ ggplot(dat_full, aes(x = PRICE, y = ANNUAL_TAX)) +
     theme_bw()
 
 
-ggplot(dat, aes(x = PRICE, y = CO2_EMISSIONS)) + 
-    scale_x_continuous(trans = "log") + 
-    geom_point() + 
-    theme_bw()
 
 ggplot(dat_full, aes(x = PRICE, y = AVERAGE_MPG)) + 
     scale_x_continuous(trans = "log") + 
@@ -84,8 +84,9 @@ ggplot(dat_full, aes(x = DOOR_TYPE, y = PRICE)) +
 
 
 dat <- dat_full %>% 
-    select( -TITLE, -SELLER_DISTANCE , -SELLER_RATING , - LINK, -MAKE) %>% 
-    nest(-MODEL) %>% 
+    mutate(PRICE = log(PRICE)) %>% 
+    select( -TITLE , -SELLER_RATING , - LINK, -MAKE) %>% 
+    nest(data = -MODEL) %>% 
     mutate( rec  = map(data, get_rec)) %>% 
     mutate( baked = map2(data, rec, get_bake)) %>% 
     mutate( mod = map(baked, get_model)) %>% 
@@ -95,7 +96,7 @@ dat <- dat_full %>%
     mutate( preds = map2( baked_model, mod, get_preds))
 
 dat %>% 
-    mutate(S = pmap(list(preds, 2, 8), get_summary_inf)) %>% 
+    mutate(S = pmap(list(preds, 3, 10), get_summary_inf)) %>% 
     select(MODEL, S) %>%
     unnest(S)  %>% 
     arrange( MONTH_COST)

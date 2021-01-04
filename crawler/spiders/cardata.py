@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import scrapy
 import pymongo
+import random
 from crawler.items import Car
 
 class carData(scrapy.Spider):
@@ -30,10 +31,14 @@ class carData(scrapy.Spider):
             for x in col.find({"lazy" : None}, {"cid"})
         ]
         
+        self.logger.info("Scraping {} from initial".format(len(initial)))
+        self.logger.info("Scraping {} from lazy".format(len(lazy)))
+        
         client.close()
         
         cars = initial + lazy
-
+        random.shuffle(cars)
+        
         for car in cars:
             if car["cat"] == "lazy":
                 URL = URL_LAZY.format(car["cid"])
@@ -42,7 +47,7 @@ class carData(scrapy.Spider):
                 URL = URL_INITIAL.format(car["cid"])
             
             yield scrapy.Request( 
-                URL , 
+                URL, 
                 callback=self.parse_for_content, 
                 meta = car 
             )

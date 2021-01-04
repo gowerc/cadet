@@ -10,21 +10,19 @@ class carListing(scrapy.Spider):
     allowed_domains = ['autotrader.co.uk']
 
     def start_requests(self):
-        self.logger.debug("Entered 'start_requests'")
-        ## set constants
-        self.SELF_PAGE_LIMIT = 70   # max = 100
+        self.SELF_PAGE_LIMIT = 90   # max = 100
         self.PAGE_LIMIT = 100
         self.CARS_PER_PAGE = 12
         self.URL_TEMPLATE = "https://www.autotrader.co.uk/car-search?make={}&model={}&postcode=AL71GA&sort=distance&page={}"
         self.cars = [
+            ["ALFA", "ROMEO"],
             ["VAUXHALL", "CORSA"],
             ["VAUXHALL", "ASTRA"],
             ["FORD", "FOCUS"],
-            ["FIAT", "500"],
             ["FORD", "FIESTA"],
+            ["FIAT", "500"],
             ["SEAT", "LEON"],
             ["HONDA", "CIVIC"],
-            ["TOYOTA", "YARIS"],
             ["VOLKSWAGEN", "GOLF"],
             ["PEUGEOT", "308"],
             ["AUDI", "A3"],
@@ -32,8 +30,8 @@ class carListing(scrapy.Spider):
             ["RENAULT", "CLIO"],
             ["MAZDA" , "MAZDA3"],
             ["TOYOTA", "COROLLA"],
-            ["ALFA", "ROMEO"],
-            ["BMW", "1 SERIES"],
+            ["TOYOTA", "YARIS"],
+            ["TOYOTA", "AURIS"],
             ["SKODA", "OCTAVIA"],
             ["SKODA", "SCALA"]
         ]

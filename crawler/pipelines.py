@@ -41,11 +41,9 @@ class MongoPipeline(object):
     def process_item(self, item, spider):
         
         if item["cat"] == "listing":
-            self.col.replace_one(
-                {"cid": item["cid"]},
-                item["content"],
-                upsert=True
-            )
+            exists = self.col.find_one( {"cid": item["cid"]})
+            if exists == None:
+                self.col.insert_one(item["content"])
             
         if item["cat"] == "initial":
             self.col.update_one(

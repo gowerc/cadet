@@ -22,6 +22,8 @@ services:
   mongo:
     image: mongo:4.2
     restart: always
+    volumes: 
+      - "dbdata:/data/db"
     environment:
       MONGO_INITDB_ROOT_USERNAME: root
       MONGO_INITDB_ROOT_PASSWORD: example

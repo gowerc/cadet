@@ -1,18 +1,20 @@
 #### Great documentation for Mongolite at:
 # https://jeroen.github.io/mongolite/
 
-
-devtools::install()
-library(project)
+devtools::load_all()
 
 ## Get access to mongo database
 mong <- init_mongo()
 
-## Import data as json dataset
-js <- mongo2list(mong)
+df <- mong$find('{"initial"={$ne:null}, "lazy" = {$ne:null}}')
 
-## Extract key values into a tabular df
-dat_raw <- json2df(js)
+df <- mong$find('{"initial" : { "$ne" : null }, "lazy" : { "$ne" : null }}')
+
+dat <- json2df(df)
+
+
+dat
+
 
 
 ###### Querying
